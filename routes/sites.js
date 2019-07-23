@@ -6,35 +6,15 @@ var sortJsonArray = require('sort-json-array');
 
 var router = express.Router();
 
-/* GET sites listing.
-router.get('/', function(req, res) {
-    request.get("https://api.mercadolibre.com/sites/", function (error,response,body) {
-        if (error){
-            res.send(error)
-        }
-        res.send(JSON.parse(body))
-    });
-});
 
-/* GET site listing.
-
-router.get('/:id', function(req, res) {
-    var id = req.params.id
-    request.get("https://api.mercadolibre.com/sites/"+id, function (error,response,body) {
-        if (error){
-            res.send(error)
-        }
-        res.send(JSON.parse(body))
-    });
-});
-*/
-
-/* GET agencies listing. */
-router.get('/:siteID/payment_methods/:paymentMethodID/agencies/:orderBy', function(req, res) {
+/* GET agencies listing with filter */
+router.get('/:siteID/payment_methods/:paymentMethodID/agencies/:locationmin/:locationmax/:orderBy?', function(req, res) {
     var siteID = req.params.siteID
     var paymentMethodID = req.params.paymentMethodID
+    var locationmin = req.params.locationmin
+    var locationmax = req.params.locationmax
     var orderBy = req.params.orderBy
-    request.get("https://api.mercadolibre.com/sites/"+siteID+"/payment_methods/"+paymentMethodID+"/agencies/", function (error,response,body) {
+    request.get("https://api.mercadolibre.com/sites/"+siteID+"/payment_methods/"+paymentMethodID+"/agencies?near_to="+locationmin+","+locationmax, function (error,response,body) {
 
         if (error){
             res.send(error)
@@ -59,38 +39,13 @@ router.get('/:siteID/payment_methods/:paymentMethodID/agencies/:orderBy', functi
 
             res.send(sortJsonArray(obj, 'distance', 'asc'))
 
-        }else if(orderBy === 'distance'){
-
-            res.send(obj)
         }else{
 
-            res.send("El filtro seleccionado no existe")
+            res.send(obj)
         }
 
 
 
-    });
-});
-
-/* GET agencies listing by geopoint*/
-router.get('/:siteID/payment_methods/:paymentMethodID/agencies/:locationmin/:locationmax', function(req, res) {
-    var siteID = req.params.siteID
-    var paymentMethodID = req.params.paymentMethodID
-    var locationmin = req.params.locationmin
-    var locationmax = req.params.locationmax
-
-    request.get("https://api.mercadolibre.com/sites/"+siteID+"/payment_methods/"+paymentMethodID+"/agencies?near_to="+locationmin+","+locationmax , function (error,response,body) {
-        if (error){
-            res.send(error)
-        }
-
-        var output = JSON.parse(body);
-
-        fs.writeFileSync('geolocation.json', JSON.stringify(output.results));
-
-        var obj = JSON.parse(fs.readFileSync('geolocation.json', 'utf8'))
-
-        res.send(obj)
     });
 });
 

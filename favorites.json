@@ -1,1 +1,1 @@
-{"paging":{"limit":50,"offset":0,"total":1},"results":[{"address":{"address_line":"P VITTORI 3803","city":"SANTA FE","country":"Argentina","location":"-31.6332166,-60.7002365","other_info":"","state":"SANTA FE","zip_code":""},"agency_code":"6557","correspondent_id":"","description":"“Maxikiosco Ya” de Enrico Analia I y Villalba Nanci (S.H)","disabled":"false","distance":null,"id":"569000f0e4b0ce36d943bf47","payment_method_id":"rapipago","phone":"","site_id":"MLA","terminal":"false"}]}
+{"message":"Resource not found: -31.412971","status":"ERROR"}
