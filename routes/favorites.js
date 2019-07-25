@@ -17,7 +17,7 @@ router.get('/:siteID/payment_methods/:paymentMethodID/agencies/:id', function(re
         }
 
         var obj = {
-            table: []
+            favorites: []
         };
 
         var jsonParse = JSON.parse(body);
@@ -34,14 +34,14 @@ router.get('/:siteID/payment_methods/:paymentMethodID/agencies/:id', function(re
                             var existe = 0;
 
                             var key, count = 0;
-                            for(key in obj.table) {
-                                if(obj.table.hasOwnProperty(key)) {
+                            for(key in obj.favorites) {
+                                if(obj.favorites.hasOwnProperty(key)) {
                                     count++;
                                 }
                             }
 
                             for (var i=0; i<count; i++){
-                                if(obj.table[i].id === id){
+                                if(obj.favorites[i].id === id){
                                     existe = 1;
                                     console.log("el id existe")
                                     break;
@@ -49,7 +49,7 @@ router.get('/:siteID/payment_methods/:paymentMethodID/agencies/:id', function(re
                             }
                             if (existe === 0){
                                 for (var b=0; b<1 ; b++){
-                                    obj.table.push(jsonParse.results[b]);
+                                    obj.favorites.push(jsonParse.results[b]);
                                 }
                                 var json = JSON.stringify(obj);
                                 fs.writeFileSync('favorites.json', json);
@@ -62,7 +62,7 @@ router.get('/:siteID/payment_methods/:paymentMethodID/agencies/:id', function(re
                         }});
                 } else {
                     for (var i=0; i<1 ; i++){
-                        obj.table.push(jsonParse.results[i]);
+                        obj.favorites.push(jsonParse.results[i]);
                     }
                     var json = JSON.stringify(obj);
                     fs.writeFileSync('favorites.json', json);
@@ -78,7 +78,7 @@ router.get('/list', function(req, res) {
 
     var output = (JSON.parse(fs.readFileSync('favorites.json').toString()))
 
-    res.send(output.table)
+    res.send(output.favorites)
 
 
 });

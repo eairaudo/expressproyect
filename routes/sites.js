@@ -24,6 +24,7 @@ router.get('/:siteID/payment_methods/:paymentMethodID/agencies', function(req, r
 
         if(latitud=== ''  || longitud === ''){
 
+            res.statusMessage = "Los campos latitud y longuitud estan vacios";
             res.status(404).send("Los campos latitud y longuitud estan vacios")
         }
         else{
@@ -37,7 +38,7 @@ router.get('/:siteID/payment_methods/:paymentMethodID/agencies', function(req, r
 
             if(orderBy === 'address_line') {
 
-                res.send(sortJsonArray(obj, 'address.address_line', 'asc'))
+                res.send(sortJsonArray(obj, 'address.address_line','des'))
 
             }else if(orderBy === 'agency_code') {
 
