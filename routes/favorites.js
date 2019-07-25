@@ -20,32 +20,55 @@ router.get('/:siteID/payment_methods/:paymentMethodID/agencies/:id', function(re
             table: []
         };
 
+        var jsonParse = JSON.parse(body);
+
         fs.exists('favorites.json', function(exists){
                 if(exists){
-                    console.log("yes file exists");
+                    console.log("existe archivo");
                     fs.readFile('favorites.json', function readFileCallback(err, data){
                         if (err){
                             console.log(err);
                         } else {
                             obj = JSON.parse(data);
-                            for (var i=0; i<1 ; i++){
-                                obj.table.push(body);
+
+                            var existe = 0;
+
+                            var key, count = 0;
+                            for(key in obj.table) {
+                                if(obj.table.hasOwnProperty(key)) {
+                                    count++;
+                                }
                             }
-                            var json = JSON.stringify(obj);
-                            fs.writeFileSync('favorites.json', json);
+
+                            for (var i=0; i<count; i++){
+                                if(obj.table[i].id === id){
+                                    existe = 1;
+                                    console.log("el id existe")
+                                    break;
+                                }
+                            }
+                            if (existe === 0){
+                                for (var b=0; b<1 ; b++){
+                                    obj.table.push(jsonParse.results[b]);
+                                }
+                                var json = JSON.stringify(obj);
+                                fs.writeFileSync('favorites.json', json);
+                                res.statusMessage = "La agencia se guardo";
+                                res.send(jsonParse.results)
+                            }else{
+                                res.statusMessage = "La agencia ya fue guardada anteriormente";
+                                res.status(400).send()
+                            }
                         }});
                 } else {
-                    console.log("file not exists")
                     for (var i=0; i<1 ; i++){
-                        obj.table.push(body);
+                        obj.table.push(jsonParse.results[i]);
                     }
                     var json = JSON.stringify(obj);
                     fs.writeFileSync('favorites.json', json);
+                    res.statusMessage = "La agencia se guardo";
+                    res.send(jsonParse.results)
                 }
-
-            var output = (JSON.parse(fs.readFileSync('favorites.json').toString()))
-
-            res.send(output.table)
 
             });
     });
