@@ -13,10 +13,11 @@ router.get('/:siteID/payment_methods/:paymentMethodID/agencies', function(req, r
     var paymentMethodID = req.params.paymentMethodID
     var latitud = req.query.latitud
     var longitud = req.query.longitud
+    var radio = req.query.radio
     var limit = req.query.limit
     var offset = req.query.offset
     var orderBy = req.query.orderBy
-    request.get("https://api.mercadolibre.com/sites/"+siteID+"/payment_methods/"+paymentMethodID+"/agencies?near_to="+latitud+","+longitud+"&limit="+limit+"&offset="+offset, function (error,response,body) {
+    request.get("https://api.mercadolibre.com/sites/"+siteID+"/payment_methods/"+paymentMethodID+"/agencies?near_to="+latitud+","+longitud+","+radio+"&limit="+limit+"&offset="+offset, function (error,response,body) {
 
         if (error){
             res.send(error)
